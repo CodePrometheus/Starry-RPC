@@ -12,4 +12,13 @@ public interface RpcServer {
      * 服务端启动
      */
     void start();
+
+    /**
+     * 发布
+     *
+     * @param service
+     * @param serviceName
+     * @param <T>
+     */
+    <T> void publishService(T service, String serviceName);
 }
