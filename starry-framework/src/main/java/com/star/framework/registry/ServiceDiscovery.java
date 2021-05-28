@@ -23,6 +23,6 @@ public interface ServiceDiscovery {
      * @param serviceName
      * @return
      */
-    List<String> lookupServicesList(String serviceName);
+    // List<String> lookupServicesList(String serviceName);
 
 }

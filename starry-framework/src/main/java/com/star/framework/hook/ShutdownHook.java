@@ -2,6 +2,7 @@ package com.star.framework.hook;
 
 import com.star.common.factory.ThreadPoolFactory;
 import com.star.common.util.CuratorUtils;
+import com.star.common.util.NacosUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,7 @@ public class ShutdownHook {
         logger.info("关闭后将自动注销所有的服务");
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             CuratorUtils.clearRegistry();
-            NacosUtil.clearRegistry();
+            NacosUtils.clearRegistry();
             ThreadPoolFactory.shutDownAll();
         }));
     }
