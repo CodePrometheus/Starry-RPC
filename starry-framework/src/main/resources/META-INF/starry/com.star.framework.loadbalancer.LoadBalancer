@@ -1,0 +1,1 @@
+loadBalancer=com.star.framework.loadbalancer.impl.ConsistentHashLoadBalancer

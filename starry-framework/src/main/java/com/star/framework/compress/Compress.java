@@ -1,5 +1,6 @@
 package com.star.framework.compress;
 
+import com.star.common.extension.SPI;
 import com.star.framework.compress.impl.GzipCompress;
 import com.star.framework.compress.impl.SnappyCompress;
 
@@ -11,6 +12,7 @@ import com.star.framework.compress.impl.SnappyCompress;
  * @Author: zzStar
  * @Date: 05-27-2021 14:52
  */
+@SPI
 public interface Compress {
 
     Integer GZIP_COMPRESS = 0;

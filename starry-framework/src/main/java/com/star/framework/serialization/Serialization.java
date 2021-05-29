@@ -1,5 +1,6 @@
 package com.star.framework.serialization;
 
+import com.star.common.extension.SPI;
 import com.star.framework.serialization.impl.HessianSerialization;
 import com.star.framework.serialization.impl.JsonSerialization;
 import com.star.framework.serialization.impl.KryoSerialization;
@@ -9,6 +10,7 @@ import com.star.framework.serialization.impl.ProtobufSerializer;
  * @Author: zzStar
  * @Date: 05-27-2021 13:37
  */
+@SPI
 public interface Serialization {
 
     Integer KRYO_SERIALIZER = 0;

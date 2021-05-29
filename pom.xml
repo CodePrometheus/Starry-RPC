@@ -11,6 +11,9 @@
     <modules>
         <module>starry-framework</module>
         <module>starry-common</module>
+        <module>starry-server</module>
+        <module>starry-client</module>
+        <module>starry-api</module>
     </modules>
 
     <dependencies>

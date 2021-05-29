@@ -1,9 +1,12 @@
 package com.star.framework.provider;
 
+import com.star.common.extension.SPI;
+
 /**
  * @Author: zzStar
  * @Date: 05-28-2021 08:53
  */
+@SPI
 public interface ServiceProvider {
 
     /**

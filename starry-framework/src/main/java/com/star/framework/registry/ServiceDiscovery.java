@@ -1,5 +1,7 @@
 package com.star.framework.registry;
 
+import com.star.common.extension.SPI;
+
 import java.net.InetSocketAddress;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import java.util.List;
  * @Author: zzStar
  * @Date: 05-27-2021 14:39
  */
+@SPI
 public interface ServiceDiscovery {
 
     /**

@@ -101,6 +101,7 @@ public class ExtensionLoader<T> {
         // 加载该接口下的所有实现
         Class<?> clazz = getExtensionClasses().get(name);
         if (clazz == null) {
+            logger.error("createExtension 检查扩展文件配置");
             throw new RuntimeException("No such extension of name " + name);
         }
         T instance = (T) EXTENSION_INSTANCES.get(clazz);
