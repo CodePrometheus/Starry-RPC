@@ -1,4 +1,4 @@
-package com.star.framework.registry.zookpper;
+package com.star.framework.registry.zookeeper;
 
 import com.star.common.util.CuratorUtils;
 import com.star.framework.registry.ServiceRegistry;

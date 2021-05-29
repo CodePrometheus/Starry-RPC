@@ -1,2 +1,2 @@
-serviceRegistry=com.star.framework.registry.nacos.NacosServiceRegistry
-#serviceRegistry=com.star.framework.registry.zookeeper.zkServiceRegistry
+#serviceRegistry=com.star.framework.registry.nacos.NacosServiceRegistry
+serviceRegistry=com.star.framework.registry.zookeeper.zkServiceRegistry

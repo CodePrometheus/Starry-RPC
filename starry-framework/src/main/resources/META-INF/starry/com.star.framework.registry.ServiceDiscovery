@@ -1,2 +1,2 @@
-serviceDiscovery=com.star.framework.registry.nacos.NacosServiceDiscovery
-#serviceDiscovery=com.star.framework.registry.zookeeper.zkServiceDiscovery
+#serviceDiscovery=com.star.framework.registry.nacos.NacosServiceDiscovery
+serviceDiscovery=com.star.framework.registry.zookeeper.zkServiceDiscovery

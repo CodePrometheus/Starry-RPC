@@ -1,4 +1,4 @@
-package com.star.framework.registry.zookpper;
+package com.star.framework.registry.zookeeper;
 
 import com.star.common.enums.RpcError;
 import com.star.common.exception.StarryRpcException;
