@@ -48,6 +48,8 @@ public class BeanPostProcessorOfClient implements BeanPostProcessor {
 
                 RpcClientProxy rpcClientProxy = new RpcClientProxy(failTolerate, refProperties);
                 Object clientProxy = rpcClientProxy.getProxy(declaredField.getType());
+                // 注意这里要声明
+                declaredField.setAccessible(true);
                 try {
                     declaredField.set(bean, clientProxy);
                 } catch (IllegalAccessException e) {

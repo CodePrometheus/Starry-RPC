@@ -13,10 +13,10 @@ import java.util.Properties;
  * @Date: 05-30-2021 15:15
  */
 @StarryServiceServerScan(basePackage = "com.star.server.impl")
-public class PackageScannerTest {
+public class StarryServerTest {
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(PackageScannerTest.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(StarryServerTest.class);
         Properties properties = PropertiesFileUtil.readPropertiesFile(RpcConfig.RPC_CONFIG_PATH.getPropertyValue());
         String serverType = properties.getProperty("server.type");
         RpcServer bean = (RpcServer) context.getBean(serverType);
