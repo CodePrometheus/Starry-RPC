@@ -1,0 +1,3 @@
+failover=com.star.framework.support.impl.FailOver
+failfast=com.star.framework.support.impl.FailFast
+failsafe=com.star.framework.support.impl.FailSafe

@@ -58,5 +58,4 @@ public class BeanPostProcessorOfClient implements BeanPostProcessor {
         return bean;
     }
 
-
 }

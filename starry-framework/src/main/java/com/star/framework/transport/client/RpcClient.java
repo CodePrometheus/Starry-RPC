@@ -1,6 +1,7 @@
 package com.star.framework.transport.client;
 
 import com.star.common.domain.StarryRequest;
+import com.star.common.extension.SPI;
 
 import java.net.InetSocketAddress;
 
@@ -10,6 +11,7 @@ import java.net.InetSocketAddress;
  * @Author: zzStar
  * @Date: 05-27-2021 15:59
  */
+@SPI
 public interface RpcClient {
 
     /**

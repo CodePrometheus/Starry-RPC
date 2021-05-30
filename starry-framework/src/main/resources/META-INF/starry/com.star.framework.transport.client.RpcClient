@@ -1,0 +1,2 @@
+#socketClient=com.star.framework.transport.client.socket.SocketClient
+nettyClient=com.star.framework.transport.client.netty.NettyClient

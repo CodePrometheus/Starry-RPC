@@ -28,7 +28,6 @@ public class RpcClientProxy implements InvocationHandler {
     private final FailTolerate failTolerate;
     private final StarryRpcProperties properties;
 
-
     public RpcClientProxy(FailTolerate failTolerate, StarryRpcProperties properties) {
         this.failTolerate = failTolerate;
         this.properties = properties;
