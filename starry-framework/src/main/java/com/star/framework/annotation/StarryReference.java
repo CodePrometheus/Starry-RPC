@@ -3,7 +3,7 @@ package com.star.framework.annotation;
 import java.lang.annotation.*;
 
 /**
- * 使用远程服务端提供的服务类，即用于客户端
+ * 使用远程服务端提供的服务类
  *
  * @Author: zzStar
  * @Date: 05-25-2021 23:14

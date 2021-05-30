@@ -45,5 +45,15 @@ public class zkServiceDiscovery implements ServiceDiscovery {
         return new InetSocketAddress(host, port);
     }
 
+    @Override
+    public List<String> lookupServicesList(String serviceName) {
+        CuratorFramework zkClient = CuratorUtils.getZkClient();
+        List<String> serviceUrlList = CuratorUtils.getChildrenNodes(zkClient, serviceName);
+        if (serviceUrlList == null || serviceUrlList.size() == 0) {
+            logger.error("找不到对应的服务: " + serviceName);
+            throw new StarryRpcException(RpcError.SERVICE_NOT_FOUND);
+        }
+        return serviceUrlList;
+    }
 
 }

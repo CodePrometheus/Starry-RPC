@@ -1,23 +1,25 @@
 package com.star.framework.transport.server.socket;
 
+import com.star.common.enums.RpcConfig;
 import com.star.common.enums.RpcError;
 import com.star.common.exception.StarryRpcException;
 import com.star.common.extension.ExtensionLoader;
 import com.star.common.factory.ThreadPoolFactory;
+import com.star.common.util.PropertiesFileUtil;
 import com.star.framework.compress.Compress;
 import com.star.framework.hook.ShutdownHook;
-import com.star.framework.provider.ServiceProvider;
-import com.star.framework.registry.ServiceRegistry;
 import com.star.framework.serialization.Serialization;
-import com.star.framework.transport.server.AbstractRpcServer;
 import com.star.framework.transport.server.RequestHandler;
+import com.star.framework.transport.server.RpcServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -26,7 +28,8 @@ import java.util.concurrent.ExecutorService;
  * @Author: zzStar
  * @Date: 05-28-2021 10:15
  */
-public class SocketServer extends AbstractRpcServer {
+@Component
+public class SocketServer implements RpcServer {
 
     private static final Logger logger = LoggerFactory.getLogger(SocketServer.class);
 
@@ -35,15 +38,16 @@ public class SocketServer extends AbstractRpcServer {
     private Compress compress;
     private RequestHandler requestHandler = new RequestHandler();
 
-    public SocketServer(String host, int port) {
-        this.host = host;
-        this.port = port;
+    private String host;
+    private int port;
+
+    public SocketServer() {
         threadPool = ThreadPoolFactory.createDefaultThreadPool("starry-socket");
-        this.serviceRegistry = ExtensionLoader.getExtensionLoader(ServiceRegistry.class).getExtension("serviceRegistry");
-        this.serviceProvider = ExtensionLoader.getExtensionLoader(ServiceProvider.class).getExtension("serviceProvider");
         this.serialization = ExtensionLoader.getExtensionLoader(Serialization.class).getExtension("serialization");
         this.compress = ExtensionLoader.getExtensionLoader(Compress.class).getExtension("compress");
-        scanServices();
+        Properties properties = PropertiesFileUtil.readPropertiesFile(RpcConfig.RPC_CONFIG_PATH.getPropertyValue());
+        host = properties.getProperty("server.host");
+        port = Integer.parseInt(properties.getProperty("server.port"));
     }
 
     @Override
@@ -69,6 +73,7 @@ public class SocketServer extends AbstractRpcServer {
                         socket, requestHandler, serialization, compress
                 ));
             }
+            threadPool.shutdown();
         } catch (IOException e) {
             logger.error("服务器启动时有错误发生:", e);
         }

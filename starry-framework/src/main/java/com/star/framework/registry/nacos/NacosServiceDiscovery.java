@@ -31,7 +31,7 @@ public class NacosServiceDiscovery implements ServiceDiscovery {
         try {
             List<String> serviceAddresses = NacosUtils.getAllInstanceString(serviceName);
             if (serviceAddresses.size() == 0) {
-                logger.error("找不到对应的服务: " + serviceName);
+                logger.error("Nacos找不到对应的服务: " + serviceName);
                 throw new StarryRpcException(RpcError.SERVICE_NOT_FOUND);
             }
 
@@ -45,4 +45,20 @@ public class NacosServiceDiscovery implements ServiceDiscovery {
         }
         return null;
     }
+
+    @Override
+    public List<String> lookupServicesList(String serviceName) {
+        try {
+            List<String> serviceAddresses = NacosUtils.getAllInstanceString(serviceName);
+            if (serviceAddresses.size() == 0) {
+                logger.error("Nacos找不到服务: " + serviceName);
+                throw new StarryRpcException(RpcError.SERVICE_NOT_FOUND);
+            }
+            return serviceAddresses;
+        } catch (NacosException e) {
+            logger.error("Nacos获取服务时有错误发生: ", e);
+        }
+        return null;
+    }
+
 }

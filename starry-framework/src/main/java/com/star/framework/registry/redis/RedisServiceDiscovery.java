@@ -40,4 +40,14 @@ public class RedisServiceDiscovery implements ServiceDiscovery {
         int port = Integer.parseInt(addressArray[1]);
         return new InetSocketAddress(host, port);
     }
+
+    @Override
+    public List<String> lookupServicesList(String serviceName) {
+        List<String> address = RedisUtils.getAllInstanceString(serviceName);
+        if (address.size() == 0) {
+            logger.error("Redis找不到对应的服务: {}", serviceName);
+            throw new StarryRpcException(RpcError.SERVICE_NOT_FOUND);
+        }
+        return address;
+    }
 }

@@ -10,7 +10,6 @@ import com.star.common.util.RpcMessageChecker;
 import com.star.framework.codec.ObjectReader;
 import com.star.framework.codec.ObjectWriter;
 import com.star.framework.compress.Compress;
-import com.star.framework.registry.ServiceDiscovery;
 import com.star.framework.serialization.Serialization;
 import com.star.framework.transport.client.RpcClient;
 import org.slf4j.Logger;
@@ -33,19 +32,15 @@ public class SocketClient implements RpcClient {
     private static final Logger logger = LoggerFactory.getLogger(SocketClient.class);
 
     private final Compress compress;
-
     private final Serialization serialization;
 
-    private final ServiceDiscovery serviceDiscovery;
-
     public SocketClient() {
-        this.serviceDiscovery = ExtensionLoader.getExtensionLoader(ServiceDiscovery.class).getExtension("serviceDiscovery");
         this.serialization = ExtensionLoader.getExtensionLoader(Serialization.class).getExtension("serialization");
         this.compress = ExtensionLoader.getExtensionLoader(Compress.class).getExtension("compress");
     }
 
     @Override
-    public Object sendRequest(StarryRequest request) {
+    public Object sendRequest(InetSocketAddress address, StarryRequest request) {
         if (serialization == null) {
             logger.error("未设置序列化器");
             throw new StarryRpcException(RpcError.SERIALIZER_NOT_FOUND);
@@ -56,7 +51,6 @@ public class SocketClient implements RpcClient {
             throw new StarryRpcException(RpcError.COMPRESS_NOT_FOUND);
         }
 
-        InetSocketAddress address = serviceDiscovery.lookupService(request.getInterfaceName());
         try (Socket socket = new Socket()) {
             socket.connect(address);
             OutputStream out = socket.getOutputStream();

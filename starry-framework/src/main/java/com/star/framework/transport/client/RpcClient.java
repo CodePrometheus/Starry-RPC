@@ -2,6 +2,8 @@ package com.star.framework.transport.client;
 
 import com.star.common.domain.StarryRequest;
 
+import java.net.InetSocketAddress;
+
 /**
  * 客户端通用接口
  *
@@ -13,9 +15,10 @@ public interface RpcClient {
     /**
      * 客户端发送请求
      *
+     * @param address
      * @param request
      * @return
      */
-    Object sendRequest(StarryRequest request);
+    Object sendRequest(InetSocketAddress address, StarryRequest request);
 
 }

@@ -4,16 +4,14 @@ import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
+import com.star.common.enums.RpcConfig;
 import com.star.common.enums.RpcError;
 import com.star.common.exception.StarryRpcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -28,9 +26,11 @@ public class NacosUtils {
     private static final Set<String> serviceNames = new HashSet<>();
     private static InetSocketAddress address;
 
-    private static final String SERVER_ADDR = "127.0.0.1:8848";
+    private static final String SERVER_ADDR;
 
     static {
+        Properties properties = PropertiesFileUtil.readPropertiesFile(RpcConfig.RPC_CONFIG_PATH.getPropertyValue());
+        SERVER_ADDR = properties.getProperty("nacos.address");
         namingService = getNacosNamingService();
     }
 
@@ -70,9 +70,9 @@ public class NacosUtils {
                 String serviceName = iter.next();
                 try {
                     namingService.deregisterInstance(serviceName, host, port);
-                    logger.info("注册服务-> {} 成功", serviceName);
+                    logger.info("Nacos注册服务-> {} 成功", serviceName);
                 } catch (NacosException e) {
-                    logger.error("注册服务-> {} 失败", serviceName, e);
+                    logger.error("Nacos注册服务-> {} 失败", serviceName, e);
                 }
             }
         }

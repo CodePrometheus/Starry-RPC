@@ -63,7 +63,7 @@ public class NettyClient implements RpcClient {
 
 
     @Override
-    public Object sendRequest(StarryRequest request) {
+    public Object sendRequest(InetSocketAddress address, StarryRequest request) {
         if (serialization == null) {
             logger.error("未设置序列化器");
             throw new StarryRpcException(RpcError.SERIALIZER_NOT_FOUND);
@@ -76,7 +76,6 @@ public class NettyClient implements RpcClient {
 
         CompletableFuture<StarryResponse> resultFuture = new CompletableFuture<>();
         try {
-            InetSocketAddress address = serviceDiscovery.lookupService(request.getInterfaceName());
             Channel channel = ChannelProvider.get(address, serialization, compress);
             if (!channel.isActive()) {
                 group.shutdownGracefully();

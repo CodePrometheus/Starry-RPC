@@ -2,10 +2,10 @@ package com.star.framework.transport.client;
 
 import com.star.common.domain.StarryRequest;
 import com.star.common.domain.StarryResponse;
+import com.star.common.exception.StarryRpcException;
 import com.star.common.util.RpcMessageChecker;
 import com.star.framework.properties.StarryRpcProperties;
-import com.star.framework.transport.client.netty.NettyClient;
-import com.star.framework.transport.client.socket.SocketClient;
+import com.star.framework.support.FailTolerate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,12 +25,12 @@ public class RpcClientProxy implements InvocationHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(RpcClientProxy.class);
 
+    private final FailTolerate failTolerate;
     private final StarryRpcProperties properties;
 
-    private final RpcClient client;
 
-    public RpcClientProxy(RpcClient client, StarryRpcProperties properties) {
-        this.client = client;
+    public RpcClientProxy(FailTolerate failTolerate, StarryRpcProperties properties) {
+        this.failTolerate = failTolerate;
         this.properties = properties;
     }
 
@@ -50,21 +50,21 @@ public class RpcClientProxy implements InvocationHandler {
                 method.getName(), args, method.getParameterTypes(), false);
 
         StarryResponse response = null;
-        if (client instanceof NettyClient) {
-            try {
+        try {
+            Object obj = failTolerate.invoke(request);
+            if (obj instanceof CompletableFuture) {
                 // 异步回调
-                CompletableFuture<StarryResponse> completableFuture = (CompletableFuture) client.sendRequest(request);
+                CompletableFuture<StarryResponse> completableFuture = (CompletableFuture<StarryResponse>) obj;
                 response = completableFuture.get();
-            } catch (Exception ex) {
-                logger.error("方法调用请求发送失败 : ", ex);
-                return null;
             }
-        }
 
-        if (client instanceof SocketClient) {
-            response = (StarryResponse) client.sendRequest(request);
+            if (obj instanceof StarryResponse) {
+                response = (StarryResponse) obj;
+            }
+        } catch (Exception ex) {
+            logger.error("方法调用请求发送失败: ", ex);
+            throw new StarryRpcException("服务调用失败: ", ex);
         }
-
         RpcMessageChecker.check(request, response);
         return response.getData();
     }

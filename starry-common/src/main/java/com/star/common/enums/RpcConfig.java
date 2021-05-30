@@ -14,9 +14,9 @@ public enum RpcConfig {
     /**
      * path
      */
-    RPC_CONFIG_PATH("rpc.properties"),
+    RPC_CONFIG_PATH("starryRpc.properties"),
 
-    ZK_ADDRESS("rpc.zookeeper.address");
+    ZK_ADDRESS("zookeeper.address");
 
     private final String propertyValue;
 

@@ -1,5 +1,8 @@
 package com.star.framework.annotation;
 
+import com.star.framework.spring.client.ClientScannerRegistrar;
+import org.springframework.context.annotation.Import;
+
 import java.lang.annotation.*;
 
 /**
@@ -12,8 +15,9 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface StarryServiceScan {
+@Import(ClientScannerRegistrar.class)
+public @interface StarryServiceClientScan {
 
-    String[] value() default {};
+    String[] basePackage() default {};
 
 }
