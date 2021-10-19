@@ -14,19 +14,25 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UnprocessedRequests {
 
     private static ConcurrentHashMap<String, CompletableFuture<StarryResponse>>
-            unprocessedResponseFutures = new ConcurrentHashMap<>();
+            unprocessedResponseFutureMaps = new ConcurrentHashMap<>();
 
 
+    /**
+     * put
+     *
+     * @param requestId 请求Id
+     * @param future    任务Future
+     */
     public void put(String requestId, CompletableFuture<StarryResponse> future) {
-        unprocessedResponseFutures.put(requestId, future);
+        unprocessedResponseFutureMaps.put(requestId, future);
     }
 
     public void remove(String requestId) {
-        unprocessedResponseFutures.remove(requestId);
+        unprocessedResponseFutureMaps.remove(requestId);
     }
 
     public void complete(StarryResponse response) {
-        CompletableFuture<StarryResponse> future = unprocessedResponseFutures.remove(response.getRequestId());
+        CompletableFuture<StarryResponse> future = unprocessedResponseFutureMaps.remove(response.getRequestId());
         if (future != null) {
             future.complete(response);
         } else {

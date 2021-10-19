@@ -23,7 +23,7 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * NIO方式消费侧客户端类
+ * NIO方式消费客户端类
  *
  * @Author: zzStar
  * @Date: 05-27-2021 22:17
@@ -31,8 +31,10 @@ import java.util.concurrent.CompletableFuture;
 public class NettyClient implements RpcClient {
 
     private static final Logger logger = LoggerFactory.getLogger(NettyClient.class);
+
     /**
-     * 每一个 channel 绑定了一个thread 线程， 一个 thread 线程，封装到一个 EventLoop，多个EventLoop ，组成一个线程组 EventLoopGroup
+     * 每一个 channel 绑定了一个thread 线程， 一个 thread 线程，封装到一个 EventLoop
+     * 多个EventLoop ，组成一个线程组 EventLoopGroup
      */
     private static final EventLoopGroup group;
 
@@ -85,7 +87,7 @@ public class NettyClient implements RpcClient {
             unprocessedRequests.put(request.getRequestId(), resultFuture);
             channel.writeAndFlush(request).addListener((ChannelFutureListener) future -> {
                 if (future.isSuccess()) {
-                    logger.info(String.format("客户端发送消息: %s", request.toString()));
+                    logger.info(String.format("客户端发送消息: %s", request));
                 } else {
                     future.channel().close();
                     resultFuture.completeExceptionally(future.cause());
@@ -93,6 +95,7 @@ public class NettyClient implements RpcClient {
                 }
             });
         } catch (Exception ex) {
+            // 出现异常移除Map中的Id, 同时中断线程
             unprocessedRequests.remove(request.getRequestId());
             logger.error(ex.getMessage(), ex);
             Thread.currentThread().interrupt();

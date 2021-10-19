@@ -12,6 +12,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -39,14 +40,14 @@ public class BeanPostProcessorOfClient implements BeanPostProcessor {
         Class<?> targetClass = bean.getClass();
         Field[] declaredFields = targetClass.getDeclaredFields();
 
-        for (Field declaredField : declaredFields) {
+        Arrays.stream(declaredFields).forEach(declaredField -> {
             StarryReference starryReference = declaredField.getAnnotation(StarryReference.class);
             if (null != starryReference) {
-                StarryRpcProperties refProperties = StarryRpcProperties.builder()
+                StarryRpcProperties properties = StarryRpcProperties.builder()
                         .version(starryReference.version())
                         .group(starryReference.group()).build();
 
-                RpcClientProxy rpcClientProxy = new RpcClientProxy(failTolerate, refProperties);
+                RpcClientProxy rpcClientProxy = new RpcClientProxy(failTolerate, properties);
                 Object clientProxy = rpcClientProxy.getProxy(declaredField.getType());
                 // 注意这里要声明
                 declaredField.setAccessible(true);
@@ -56,7 +57,7 @@ public class BeanPostProcessorOfClient implements BeanPostProcessor {
                     e.printStackTrace();
                 }
             }
-        }
+        });
         return bean;
     }
 

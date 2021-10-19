@@ -28,4 +28,13 @@ public class NacosServiceRegistry implements ServiceRegistry {
         }
     }
 
+    @Override
+    public void unRegister() {
+        try {
+            NacosUtils.clearRegistry();
+        } finally {
+            logger.info("Nacos 注销服务成功");
+        }
+    }
+
 }

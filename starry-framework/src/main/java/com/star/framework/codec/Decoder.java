@@ -32,7 +32,7 @@ public class Decoder extends ReplayingDecoder {
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf in, List<Object> list) throws Exception {
         int magic = in.readInt();
         if (magic != MAGIC_NUMBER) {
-            logger.error("不识别的协议包: ", magic);
+            logger.error("不识别的协议包: {}", magic);
             throw new StarryRpcException(RpcError.UNKNOWN_PROTOCOL);
         }
 
@@ -44,21 +44,21 @@ public class Decoder extends ReplayingDecoder {
         } else if (packageCode == PackageType.RESPONSE_PACK.getCode()) {
             packageClass = StarryResponse.class;
         } else {
-            logger.error("不识别的数据包: ", packageCode);
+            logger.error("不识别的数据包: {}", packageCode);
             throw new StarryRpcException(RpcError.UNKNOWN_PACKAGE_TYPE);
         }
 
         int serializationCode = in.readInt();
         Serialization serialization = Serialization.getByCodecs(serializationCode);
         if (serialization == null) {
-            logger.error("不识别的反序列化器: ", serializationCode);
+            logger.error("不识别的反序列化器: {}", serializationCode);
             throw new StarryRpcException(RpcError.UNKNOWN_SERIALIZER);
         }
 
         int compressCode = in.readInt();
         Compress compress = Compress.getByCode(compressCode);
         if (compress == null) {
-            logger.error("不识别的解压(压缩)类型: ", compressCode);
+            logger.error("不识别的解压(压缩)类型: {}", compressCode);
             throw new StarryRpcException(RpcError.UNKNOWN_COMPRESS);
         }
 

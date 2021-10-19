@@ -80,7 +80,7 @@ public class RedisUtils {
                 try {
                     jedis.hdel(SERVER_NAME_PREFIX + serviceName, host + ":" + port);
                 } catch (Exception e) {
-                    logger.error("注销服务: {} ", serviceName, e);
+                    logger.error("Redis 注销服务失败: {} ", serviceName, e);
                 }
             }
         }

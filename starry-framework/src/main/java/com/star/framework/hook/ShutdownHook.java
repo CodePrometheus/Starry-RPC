@@ -1,8 +1,11 @@
 package com.star.framework.hook;
 
+import com.star.common.extension.ExtensionLoader;
 import com.star.common.factory.ThreadPoolFactory;
 import com.star.common.util.CuratorUtils;
 import com.star.common.util.NacosUtils;
+import com.star.common.util.RedisUtils;
+import com.star.framework.registry.ServiceRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,12 +23,18 @@ public class ShutdownHook {
         return shutdownHook;
     }
 
+    private final ServiceRegistry serviceRegistry;
+    public ShutdownHook() {
+        this.serviceRegistry = ExtensionLoader.getExtensionLoader(ServiceRegistry.class).getExtension("serviceRegistry");
+    }
+
+
     public void addClearAllHook() {
-        logger.info("关闭后将自动注销所有的服务");
+        logger.info("Server 关闭后将自动注销所有的服务");
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            CuratorUtils.clearRegistry();
-            NacosUtils.clearRegistry();
+            serviceRegistry.unRegister();
             ThreadPoolFactory.shutDownAll();
         }));
     }
+
 }

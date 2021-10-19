@@ -8,7 +8,6 @@ import java.util.List;
  */
 public abstract class AbstractLoadBalancer implements LoadBalancer {
 
-
     @Override
     public String select(List<String> serviceAddresses, String serviceName) {
         if (serviceAddresses == null || serviceAddresses.size() == 0) {

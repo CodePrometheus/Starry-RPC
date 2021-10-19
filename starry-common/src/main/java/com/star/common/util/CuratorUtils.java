@@ -96,10 +96,10 @@ public class CuratorUtils {
                         zkClient.delete().forPath(p);
                     }
                 } catch (Exception e) {
-                    log.error("清理节点路径 [{}] 异常", p);
+                    log.error("zk 清理节点路径 [{}] 异常", p);
                 }
             });
-            log.info("所有注册路径已清除: [{}]", REGISTERED_PATH_SET.toString());
+            log.info("zk 所有注册路径已清除: [{}]", REGISTERED_PATH_SET);
         }
     }
 

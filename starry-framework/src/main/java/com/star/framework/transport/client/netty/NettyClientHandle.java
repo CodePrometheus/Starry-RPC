@@ -28,13 +28,15 @@ public class NettyClientHandle extends SimpleChannelInboundHandler<StarryRespons
     private final UnprocessedRequests unprocessedRequests;
 
     public NettyClientHandle() {
+        // 单例
         this.unprocessedRequests = SingletonFactory.getInstance(UnprocessedRequests.class);
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, StarryResponse msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, StarryResponse msg) {
         try {
             logger.info(String.format("客户端接收到消息: %s", msg));
+            // 处理请求
             unprocessedRequests.complete(msg);
         } finally {
             // 引用计数 释放当前请求消息
@@ -44,8 +46,7 @@ public class NettyClientHandle extends SimpleChannelInboundHandler<StarryRespons
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.error("调用过程有错误发生 : ", cause);
-        cause.printStackTrace();
+        logger.error("调用过程有错误发生: {}", cause.getMessage());
         ctx.close();
     }
 
@@ -53,8 +54,9 @@ public class NettyClientHandle extends SimpleChannelInboundHandler<StarryRespons
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             IdleState state = ((IdleStateEvent) evt).state();
+
             if (state == IdleState.WRITER_IDLE) {
-                logger.info("发送心跳包 => [{}]", ctx.channel().remoteAddress());
+                logger.info("NettyClientHandle客户端 发送心跳包 => [{}]", ctx.channel().remoteAddress());
             }
 
             Channel channel = ChannelProvider.get((InetSocketAddress) ctx.channel().remoteAddress(),

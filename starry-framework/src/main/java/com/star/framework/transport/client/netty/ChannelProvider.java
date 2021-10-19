@@ -68,14 +68,14 @@ public class ChannelProvider {
             protected void initChannel(SocketChannel socketChannel) throws Exception {
                 // 自定义序列化编解码器,Response -> ByteBuf
                 socketChannel.pipeline().addLast(new Encoder(serialization, compress))
-                        // 心跳
                         .addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS))
                         .addLast(new Decoder())
+                        // 客户端处理
                         .addLast(new NettyClientHandle());
             }
         });
 
-        Channel channel = null;
+        Channel channel;
         try {
             channel = connect(bootstrap, address);
         } catch (Exception ex) {

@@ -84,9 +84,13 @@ public class NettyServer implements RpcServer {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) {
                             ChannelPipeline pipeline = socketChannel.pipeline();
-                            pipeline.addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS))
+                            // readerIdleTime: 读超时时间 (多长时间没有接受到客户端发送数据)
+                            // writerIdleTime: 写超时时间(即多长时间没有向客户端发送数据)
+                            // allIdleTime: 所有类型的超时时间
+                            pipeline.addLast(new IdleStateHandler(1, 0, 0, TimeUnit.MINUTES))
                                     .addLast(new Encoder(serialization, compress))
                                     .addLast(new Decoder())
+                                    // 心跳
                                     .addLast(new NettyServerHandler());
                         }
                     });

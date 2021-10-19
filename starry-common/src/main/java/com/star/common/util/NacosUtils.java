@@ -70,9 +70,9 @@ public class NacosUtils {
                 String serviceName = iter.next();
                 try {
                     namingService.deregisterInstance(serviceName, host, port);
-                    logger.info("Nacos注册服务-> {} 成功", serviceName);
+                    logger.info("Nacos 注销服务-> {} 成功", serviceName);
                 } catch (NacosException e) {
-                    logger.error("Nacos注册服务-> {} 失败", serviceName, e);
+                    logger.error("Nacos 注销服务-> {} 失败", serviceName, e);
                 }
             }
         }

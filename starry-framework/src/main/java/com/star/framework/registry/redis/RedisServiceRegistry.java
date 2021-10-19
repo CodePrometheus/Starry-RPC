@@ -24,4 +24,14 @@ public class RedisServiceRegistry implements ServiceRegistry {
             logger.error("Redis注册服务时有错误发生: ", e);
         }
     }
+
+    @Override
+    public void unRegister() {
+        try {
+            RedisUtils.clearRegistry();
+        } finally {
+            logger.info("Redis 注销服务成功");
+        }
+    }
+
 }

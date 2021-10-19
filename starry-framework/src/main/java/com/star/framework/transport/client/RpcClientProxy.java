@@ -39,7 +39,7 @@ public class RpcClientProxy implements InvocationHandler {
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) {
         properties.setServiceName(method.getDeclaringClass().getName());
         // serviceName = serviceName + "_" + group + "_" + version
         String serviceName = properties.toString();

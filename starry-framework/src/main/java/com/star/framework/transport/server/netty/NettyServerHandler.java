@@ -29,7 +29,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<StarryReques
     protected void channelRead0(ChannelHandlerContext ctx, StarryRequest msg) throws Exception {
         try {
             if (msg.getHeartBeat()) {
-                logger.info("接收到客户端心跳包 ; ) ");
+                logger.info("服务端接收到客户端心跳包 ; ) ");
                 return;
             }
 
@@ -53,13 +53,20 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<StarryReques
         ctx.close();
     }
 
+    /**
+     * 超时触发
+     *
+     * @param ctx
+     * @param evt
+     * @throws Exception
+     */
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             IdleState state = ((IdleStateEvent) evt).state();
             // No data was received for a while
             if (state == IdleState.READER_IDLE) {
-                logger.info("长时间未收到心跳包，断开连接 ❌");
+                logger.info("No data was received for a while. ❌");
                 ctx.close();
             }
         } else {

@@ -21,4 +21,9 @@ public interface ServiceRegistry {
      */
     void register(String serviceName, InetSocketAddress address);
 
+    /**
+     * 注销服务
+     */
+    void unRegister();
+
 }
