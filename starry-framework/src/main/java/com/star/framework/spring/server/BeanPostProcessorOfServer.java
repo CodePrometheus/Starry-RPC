@@ -52,6 +52,9 @@ public class BeanPostProcessorOfServer implements BeanPostProcessor {
             // 获取所有的接口
             Class<?>[] interfaces = clazz.getInterfaces();
             for (Class<?> oneInterface : interfaces) {
+                if (!starryService.register()) {
+                    continue;
+                }
                 StarryRpcProperties rpcProperties = StarryRpcProperties.builder()
                         .version(starryService.version())
                         .group(starryService.group())

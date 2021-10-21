@@ -26,7 +26,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<StarryReques
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, StarryRequest msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, StarryRequest msg) {
         try {
             if (msg.getHeartBeat()) {
                 logger.info("服务端接收到客户端心跳包 ; ) ");
@@ -43,6 +43,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<StarryReques
             }
         } finally {
             ReferenceCountUtil.release(msg);
+            ctx.fireChannelRead(msg);
         }
     }
 

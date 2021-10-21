@@ -24,4 +24,9 @@ public @interface StarryService {
      */
     String group() default "";
 
+    /**
+     * 是否需要注册
+     */
+    boolean register() default true;
+
 }

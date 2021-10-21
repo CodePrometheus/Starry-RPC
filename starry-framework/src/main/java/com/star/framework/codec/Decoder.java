@@ -38,6 +38,7 @@ public class Decoder extends ReplayingDecoder {
 
         int packageCode = in.readInt();
         Class<?> packageClass;
+
         // request or response
         if (packageCode == PackageType.REQUEST_PACK.getCode()) {
             packageClass = StarryRequest.class;
@@ -48,6 +49,7 @@ public class Decoder extends ReplayingDecoder {
             throw new StarryRpcException(RpcError.UNKNOWN_PACKAGE_TYPE);
         }
 
+        // serialization
         int serializationCode = in.readInt();
         Serialization serialization = Serialization.getByCodecs(serializationCode);
         if (serialization == null) {
@@ -55,6 +57,7 @@ public class Decoder extends ReplayingDecoder {
             throw new StarryRpcException(RpcError.UNKNOWN_SERIALIZER);
         }
 
+        // compress
         int compressCode = in.readInt();
         Compress compress = Compress.getByCode(compressCode);
         if (compress == null) {

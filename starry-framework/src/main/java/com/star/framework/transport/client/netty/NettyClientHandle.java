@@ -33,7 +33,7 @@ public class NettyClientHandle extends SimpleChannelInboundHandler<StarryRespons
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, StarryResponse msg) {
+    protected void channelRead0(ChannelHandlerContext ctx, StarryResponse msg) {
         try {
             logger.info(String.format("客户端接收到消息: %s", msg));
             // 处理请求
@@ -41,6 +41,7 @@ public class NettyClientHandle extends SimpleChannelInboundHandler<StarryRespons
         } finally {
             // 引用计数 释放当前请求消息
             ReferenceCountUtil.release(msg);
+            ctx.fireChannelRead(msg);
         }
     }
 

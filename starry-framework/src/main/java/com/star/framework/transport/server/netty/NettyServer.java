@@ -88,6 +88,7 @@ public class NettyServer implements RpcServer {
                             // writerIdleTime: 写超时时间(即多长时间没有向客户端发送数据)
                             // allIdleTime: 所有类型的超时时间
                             pipeline.addLast(new IdleStateHandler(1, 0, 0, TimeUnit.MINUTES))
+                                    // 解码和编码
                                     .addLast(new Encoder(serialization, compress))
                                     .addLast(new Decoder())
                                     // 心跳

@@ -1,7 +1,6 @@
 package com.star.framework.support.impl;
 
 import com.star.common.domain.StarryRequest;
-import com.star.common.exception.StarryRpcException;
 import com.star.framework.support.AbstractFailTolerate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
