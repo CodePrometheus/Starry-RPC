@@ -69,7 +69,7 @@ public class ObjectReader {
         } else if (packageCode == PackageType.RESPONSE_PACK.getCode()) {
             packageClass = StarryResponse.class;
         } else {
-            logger.error("不识别的数据包: ", packageCode);
+            logger.error("不识别的数据包: {}", packageCode);
             throw new StarryRpcException(RpcError.UNKNOWN_PACKAGE_TYPE);
         }
 
@@ -77,7 +77,7 @@ public class ObjectReader {
         int serializationCode = bytesToInt(bytes);
         Serialization serialization = Serialization.getByCodecs(serializationCode);
         if (serialization == null) {
-            logger.error("不识别的反序列化器: ", serializationCode);
+            logger.error("不识别的反序列化器: {}", serializationCode);
             throw new StarryRpcException(RpcError.UNKNOWN_SERIALIZER);
         }
 
@@ -85,7 +85,7 @@ public class ObjectReader {
         int compressCode = bytesToInt(bytes);
         Compress compress = Compress.getByCode(compressCode);
         if (compress == null) {
-            logger.error("不识别的解压类型: ", compressCode);
+            logger.error("不识别的解压类型: {}", compressCode);
             throw new StarryRpcException(RpcError.UNKNOWN_COMPRESS);
         }
 

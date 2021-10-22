@@ -46,7 +46,7 @@ public class RequestHandlerThread implements Runnable {
             StarryResponse<Object> response = StarryResponse.success(res, starryRequest.getRequestId());
             ObjectWriter.writeObject(output, response, serialization, compress);
         } catch (IOException e) {
-            logger.error("调用或发送时有错误发生：", e);
+            logger.error("调用或发送时有错误发生: {}", e.getMessage());
         }
     }
 
